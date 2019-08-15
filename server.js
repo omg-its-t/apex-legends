@@ -16,6 +16,16 @@ if(process.env.NODE_ENV == 'development'){
 //profile routes
 app.use('/api/v1/profile', require('./routes/profile'));
 
+//handle production
+if(process.env.NODE_ENV === 'production'){
+    //set public static folder
+    app.use(esxpress.static(__dirname + '/public/'));
+}
+
+//handle SPA
+//if any route get hits of the app that dosent exist grab and redirect to the index page
+app.get(/.*/, (req, res) => res.sendFile(__dirname + '/public/index.html'));
+
 const port = process.env.PORT || 8000;
 
 app.listen(5000, () => {
